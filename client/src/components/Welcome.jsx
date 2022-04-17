@@ -1,8 +1,10 @@
+import { useContext } from "react"
 import { AiFillAlipayCircle } from "react-icons/ai"
 import { SiEthereum } from "react-icons/si"
 import { BsInfoCircle } from "react-icons/bs"
 
 import { Loader } from './'
+import { TransactionContext } from "../context/TransactionContext"
 
 const commonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
@@ -19,9 +21,7 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 
 const Welcome = () => {
 
-    const connectWallet = () => {
-
-    }
+    const { connectWallet } = useContext(TransactionContext);
 
     const handleSubmit = () => {
 
@@ -97,13 +97,13 @@ const Welcome = () => {
 
                         <div className='h-[1px] w-full bg-gray-400 my-2' />
 
-                        {true ? (
+                        {false ? (
                             <Loader />
                         ) : (
                             <button
                                 type="button"
                                 onClick={handleSubmit}
-                                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer"
+                                className="text-white w-full mt-2 border-[3px] p-2 border-[#4a5e92ec] hover:bg-[#4a5e92ec] rounded-full cursor-pointer"
                             >
                                 Send Now
                             </button>
