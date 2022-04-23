@@ -5,6 +5,7 @@ import { BsInfoCircle } from "react-icons/bs"
 
 import { Loader } from './'
 import { TransactionContext } from "../context/TransactionContext"
+import { shortenString } from '../utils/utilityFunctions';
 
 const commonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
@@ -21,10 +22,17 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 
 const Welcome = () => {
 
-    const { connectWallet } = useContext(TransactionContext);
+    const { connectWallet, currentAccount, formData, handleChange, sendTransaction } = useContext(TransactionContext);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        const { addressTo, amount, message, keyword } = formData;
+        e.preventDefault();
 
+        if (!addressTo || !amount || !message || !keyword) {
+            return;
+        }
+
+        sendTransaction();
     }
 
     return (
@@ -37,15 +45,17 @@ const Welcome = () => {
                     <p className="text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base">
                         Explore the crptyo world. Buy and Sell cryptocurrencies on krypto.
                     </p>
-                    <button
-                        type="button"
-                        onClick={connectWallet}
-                        className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-                    >
-                        <p className="text-white text-base font-semibold">
-                            Connect Wallet
-                        </p>
-                    </button>
+                    {!currentAccount &&
+                        <button
+                            type="button"
+                            onClick={connectWallet}
+                            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+                        >
+                            <p className="text-white text-base font-semibold">
+                                Connect Wallet
+                            </p>
+                        </button>
+                    }
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 w-full mt-10">
                         <div className={`rounded-tl-2xl ${commonStyles}`}>
@@ -80,7 +90,7 @@ const Welcome = () => {
                             </div>
                             <div>
                                 <p className="text-white font-light text-sm">
-                                    0xassdffsfff......fdabadfsf
+                                    {currentAccount ? shortenString(currentAccount) : "Address"}
                                 </p>
                                 <p className="text-white font-semibold text-lg mt-1">
                                     Ethereum
@@ -90,10 +100,10 @@ const Welcome = () => {
                     </div>
 
                     <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-                        <Input placeholder='Address To' name='addressTo' type="text" onChange={() => { }} />
-                        <Input placeholder='Ammount (ETH)' name='ammount' type="number" onChange={() => { }} />
-                        <Input placeholder='Keyword (GIF)' name='keyword' type="text" onChange={() => { }} />
-                        <Input placeholder='Enter Message' name='message' type="text" onChange={() => { }} />
+                        <Input placeholder='Address To' name='addressTo' type="text" handleChange={handleChange} />
+                        <Input placeholder='Ammount (ETH)' name='amount' type="number" handleChange={handleChange} />
+                        <Input placeholder='Keyword (GIF)' name='keyword' type="text" handleChange={handleChange} />
+                        <Input placeholder='Enter Message' name='message' type="text" handleChange={handleChange} />
 
                         <div className='h-[1px] w-full bg-gray-400 my-2' />
 
