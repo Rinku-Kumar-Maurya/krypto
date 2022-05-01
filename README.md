@@ -1,2 +1,2 @@
 # krypto
-![./gifs/krypt.gif]
+![demo](./gifs/Krypt.gif)
